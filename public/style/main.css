@@ -1,0 +1,68 @@
+body {
+  width: 100%;
+  height: 100%;
+  background-color: #3dcce4;
+  margin: 0;
+}
+
+svg text{
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+#main {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  position: fixed;
+}
+
+#score {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 2rem;
+  text-align: center;
+  padding-top:1rem;
+}
+
+#preview {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 5rem;
+  text-align: center;
+  padding-top: 1rem;
+  font-weight: 600;
+  color: white;
+  -webkit-touch-callout: none; /* iOS Safari */
+  -webkit-user-select: none; /* Safari */
+  -khtml-user-select: none; /* Konqueror HTML */
+  -moz-user-select: none; /* Old versions of Firefox */
+  -ms-user-select: none; /* Internet Explorer/Edge */
+  user-select: none; /* Non-prefixed version, currently */
+}
+
+#preview sup {
+  color: '#ffffff';
+  background-color: #e60000;
+  border-radius: 50%;
+  font-size: 2rem;
+  padding: .75rem .75rem;
+}
+
+#previewWord {
+  padding: .3rem .3rem;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none; /* Safari */
+  -khtml-user-select: none; /* Konqueror HTML */
+  -moz-user-select: none; /* Old versions of Firefox */
+  -ms-user-select: none; /* Internet Explorer/Edge */
+  user-select: none; /* Non-prefixed version, currently */
+  border-radius: 1rem;
+}
+
+#board {
+  /* width: 75%; */
+  border-radius: 1rem;
+}

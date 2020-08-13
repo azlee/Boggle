@@ -110,7 +110,7 @@ var GameState = {
   wordSoFar: [],
   wordsSoFar: new Map(),
   score: 0,
-  timer: 10,
+  timer: 30,
 }
 
 function isCellEqual(cell1, cell2) {
@@ -378,7 +378,7 @@ function renderTimeLeft() {
   timeLeft.innerHTML = GameState.timer;
   if (GameState.timer <= 5) {
     timeLeft.style.color = 'red';
-    timeLeft.style.weight = 'bold';
+    timeLeft.style.fontWeight = 'bold';
   }
 }
 

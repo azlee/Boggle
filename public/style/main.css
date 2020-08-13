@@ -21,11 +21,17 @@ svg text{
   position: fixed;
 }
 
-#score {
+#timeLeft {
   font-family: Arial, Helvetica, sans-serif;
   font-size: 2rem;
+  margin-left: 5rem;
+  margin-top: 1rem;
+}
+
+#score {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 3rem;
   text-align: center;
-  padding-top:1rem;
 }
 
 #preview {

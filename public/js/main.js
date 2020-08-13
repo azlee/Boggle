@@ -110,6 +110,7 @@ var GameState = {
   wordSoFar: [],
   wordsSoFar: new Map(),
   score: 0,
+  timer: 10,
 }
 
 function isCellEqual(cell1, cell2) {
@@ -173,8 +174,8 @@ function checkIfWord(wordCellCords) {
   // check if a word is formed, if so return the points for the word
   var points = 0;
   var word = '';
-  var double = false;
-  var triple = false;
+  let double = false;
+  let triple = false;
   for (var pos of wordCellCords) {
     var letter = GameState.board[pos.x][pos.y];
     word += letter;
@@ -206,7 +207,7 @@ function checkIfWord(wordCellCords) {
 
 function setPreviewWord() {
   var previewWord = document.getElementById('previewWord');
-  var word = '';
+  let word = '';
 
   for (var pos of GameState.wordSoFar) {
     word += GameState.board[pos.x][pos.y];
@@ -223,7 +224,7 @@ function clearPreviewWord() {
 function highlightCorrectWord() {
   const wordSoFar = GameState.wordSoFar;
   for (var pos of GameState.wordSoFar) {
-    var cell = document.getElementById('cell-' + pos.x + '-' + pos.y);
+    const cell = document.getElementById('cell-' + pos.x + '-' + pos.y);
     cell.setAttribute('fill', '#00ff00');
   }
   setTimeout(function() { resetCellColors(wordSoFar) }, 180);
@@ -231,7 +232,7 @@ function highlightCorrectWord() {
 
 function resetCellColors(wordSoFar) {
   for (var pos of wordSoFar) {
-    var cell = document.getElementById('cell-' + pos.x + '-' + pos.y);
+    const cell = document.getElementById('cell-' + pos.x + '-' + pos.y);
     // reset to previous color
     if (isCellEqual(pos, GameState.doubles[0])) {
       cell.setAttribute('fill', "#c0ffa2");
@@ -244,16 +245,15 @@ function resetCellColors(wordSoFar) {
 }
 
 function redPreviewWord() {
-  var previewWord = document.getElementById('previewWord');
+  const previewWord = document.getElementById('previewWord');
   previewWord.innerHTML = '<s>' + previewWord.innerHTML + '</s>';
-  // previewWord.style.backgroundColor = '#e60000';
   setTimeout(clearPreviewWord, 400);
 }
 
 function greenPreviewWord(points) {
-  var previewWord = document.getElementById('previewWord');
+  const previewWord = document.getElementById('previewWord');
   previewWord.style.backgroundColor = '#6ce534';
-  var wordPoints = document.createElement('sup');
+  const wordPoints = document.createElement('sup');
   wordPoints.innerHTML = points;
   previewWord.appendChild(wordPoints)
   setTimeout(clearPreviewWord, 400);
@@ -266,45 +266,46 @@ function greenPreviewWord(points) {
  * 
  * 
  **************************************************************************/
+
 window.onload = function() {
 
   // initialize trie
   this.initDict();
 
-  var w = window.innerWidth;
-  var h = window.innerHeight;
+  const w = window.innerWidth;
+  const h = window.innerHeight;
 
   // board width
-  var bw = 0.75 * Math.min(w, h);
-  
+  const bw = 0.75 * Math.min(w, h);
+
   // cell width
-  var padding = 25;
-  var cellWidth = (bw - (5 * padding)) / 4;
+  const padding = 25;
+  const cellWidth = (bw - (5 * padding)) / 4;
 
-  var ph = (h - bw) / 2;
-  var pw = (w - bw) / 2;
-  var [x, y] = [pw, ph];
+  const ph = (h - bw) / 2;
+  const pw = (w - bw) / 2;
+  const [x, y] = [pw, ph];
 
-  var cellX = x + cellWidth/2;
-  var cellY = y;
+  let cellX = x + cellWidth/2;
+  let cellY = y;
     // Make an instance of two and place it on the page.
-  var params = { width: w, height: h };
-  var two = new Two(params).appendTo(document.getElementById('board'));
+    const params = { width: w, height: h };
+    const two = new Two(params).appendTo(document.getElementById('board'));
 
   // init game state
   this.initGameState();
 
-  var letterCountFont = { weight: 500, size: '1.5rem', fill: "#353335", userSelect: 'none' };
-  var headerFont = { weight: 500, size: '1.5rem', fill: "#ffffff" };
+  const letterCountFont = { weight: 500, size: '1.5rem', fill: "#353335", userSelect: 'none' };
+  const headerFont = { weight: 500, size: '1.5rem', fill: "#ffffff" };
   // two has convenience methods to create shapes.
   for (var i = 0; i < NUM_CELLS; i++) {
     for (var j = 0; j < NUM_CELLS; j++) {
-      var cell = two.makeRoundedRectangle(cellX, cellY, cellWidth, cellWidth, 20);
-      var id = '-' + i + '-' + j;
+      const cell = two.makeRoundedRectangle(cellX, cellY, cellWidth, cellWidth, 15);
+      const id = '-' + i + '-' + j;
       cell.id = "cell" + id;
-      var letter = GameState.board[i][j];
-      var text = two.makeText(letter, cellX-1, cellY + padding*0.5, { weight: 5, size: '7rem', fill: "#353335"});
-      var point = two.makeText(LETTER_POINTS[letter], cellX - 15 + cellWidth/2, cellY + 15 - cellWidth/2, letterCountFont);
+      const letter = GameState.board[i][j];
+      const text = two.makeText(letter, cellX-1, cellY + padding*0.5, { weight: 5, size: '5.5rem', fill: "#353335"});
+      const point = two.makeText(LETTER_POINTS[letter], cellX - 15 + cellWidth/2, cellY + 15 - cellWidth/2, letterCountFont);
       text.id = 'letter' + id;
       point.id = 'point' + id;
 
@@ -323,7 +324,7 @@ window.onload = function() {
         header.fill = "#ff5b4d";
         header.noStroke();
         header.id = 'header' + id;
-        var headerText = two.makeText('TW', cellX + 15 - cellWidth/2, cellY + 15 - cellWidth/2, headerFont);
+        const headerText = two.makeText('TW', cellX + 15 - cellWidth/2, cellY + 15 - cellWidth/2, headerFont);
         headerText.id = 'headerText' + id;
       } else {
         cell.fill = '#f3f3f3';
@@ -335,8 +336,23 @@ window.onload = function() {
     cellX = x + cellWidth/2;
     cellY += cellWidth + padding;
   }
+ 
+  window.setTimeout(onTimeout, 1000);
 
   two.update();
+}
+
+function onTimeout()
+{
+   GameState.timer -= 1;
+   if (GameState.timer == 0) {
+     // Clear board
+     renderTimeLeft();
+     console.log("Timer up!");
+   } else {
+     window.setTimeout(onTimeout, 1000);
+     renderTimeLeft();
+   }
 }
 
 /**************************************************************************
@@ -348,33 +364,46 @@ window.onload = function() {
  **************************************************************************/
 this.document.addEventListener('mousedown', function (event) {
   GameState.mouseDown = true;
-  var cellPositionClicked = getPositionOfTarget(event.target.id);
+  const cellPositionClicked = getPositionOfTarget(event.target.id);
   if (cellPositionClicked.x != undefined) {
-    var cellClicked = document.getElementById('cell-' + cellPositionClicked.x + '-' + cellPositionClicked.y);
+    let cellClicked = document.getElementById('cell-' + cellPositionClicked.x + '-' + cellPositionClicked.y);
     cellClicked.setAttribute('fill', "#ffdd48");
     GameState.wordSoFar.push(cellPositionClicked);
     setPreviewWord();
   }
 });
 
+function renderTimeLeft() {
+  var timeLeft = document.getElementById('timeLeft');
+  timeLeft.innerHTML = GameState.timer;
+  if (GameState.timer <= 5) {
+    timeLeft.style.color = 'red';
+    timeLeft.style.weight = 'bold';
+  }
+}
+
+function renderScore(word, points) {
+  var score = document.getElementById('score');
+  GameState.wordsSoFar.set(word, points);
+  GameState.score += points;
+  var start = parseInt(score.innerHTML);
+  const step = function() {
+    score.innerHTML = start++;
+    if (score.innerHTML != GameState.score) {
+      setTimeout(step, 10);
+    }
+  }
+  step();
+}
+
 this.document.addEventListener('mouseup', function (event) {
   GameState.mouseDown = false;
-  var [word, points] = checkIfWord(GameState.wordSoFar);
+  const [word, points] = checkIfWord(GameState.wordSoFar);
   if (points > 0) {
     // set cells to green temporarily
     highlightCorrectWord();
     greenPreviewWord(points);
-    var score = document.getElementById('score');
-    GameState.wordsSoFar.set(word, points);
-    const finalScore = parseInt(score.innerHTML) + points;
-    let start = score.innerHTML === '' ? 0 : parseInt(score.innerHTML);
-    const step = function() {
-      score.innerHTML = start++;
-      if (score.innerHTML != finalScore) {
-        setTimeout(step, 10);
-      }
-    }
-    step();
+    renderScore(word, points);
   } else {
     redPreviewWord();
     resetCellColors(GameState.wordSoFar);
@@ -385,11 +414,11 @@ this.document.addEventListener('mouseup', function (event) {
 this.document.addEventListener('mousemove', function (event) {
   if (GameState.mouseDown) {
     if (event.target.id) {
-      var cellPath = getPositionOfTarget(event.target.id);
+      const cellPath = getPositionOfTarget(event.target.id);
       if (cellPath.x != undefined && getIndexOfCell(cellPath) === -1) {
         // add to word so far
         GameState.wordSoFar.push(cellPath);
-        var cellClicked = document.getElementById('cell-' + cellPath.x + '-' + cellPath.y);
+        const cellClicked = document.getElementById('cell-' + cellPath.x + '-' + cellPath.y);
         cellClicked.setAttribute('fill', "#ffdd48");
         setPreviewWord();
       }
